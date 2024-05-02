@@ -14,73 +14,77 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Main
-{
+
+public class Main {
     static Scanner userInput = new Scanner(System.in);
     static String userName;
     static int choice = 0;
 
-    public static void main(String[] args)
-    {
-            while (choice != 4)
-            {
-                // prompt the user for their name
-                System.out.println();
-                System.out.println("Enter your name: ");
-                userName = userInput.nextLine().trim();
-                System.out.println();
-                addMenu();
-
-            }
-
-    }
-
-    public static void addMenu() {
-        // print the home screen
-        System.out.println("-".repeat(65));
-        System.out.println("                Welcome to your $ Management Tool");
-        System.out.println();
-        System.out.println("                             Home");
-        System.out.println("-".repeat(65));
-        System.out.println();
-        System.out.println("What do you want to do " + userName + "?");
-        System.out.println();
-        System.out.println("1 - Add Deposit ");
-        System.out.println("2 - Make Payment (Debit) ");
-        System.out.println("3 - Ledger ");
-        System.out.println("4 - Exit ");
-        System.out.println();
-        System.out.println("Make a selection below: ");
-        choice = Integer.parseInt(userInput.nextLine());
-
-        // create switch statement for options
-        switch (choice)
-        {
-            case 1:
-                addDeposit();
-                break;
-            case 2:
-                makePayment();
-                break;
-            case 3:
-                ledger();
-                break;
-            case 4:
-                System.out.println();
-                System.out.println("Goodbye for now " + userName + "!");
-                return;
-            default:
-                System.out.println();
-                System.out.println("Error: Invalid selection ");
-                return;
+    public static void main(String[] args) {
+        while (choice != 4) {
+            // prompt the user for their name
+            System.out.println();
+            System.out.println("Enter your name: ");
+            userName = userInput.nextLine().trim();
+            System.out.println();
+            addMenu();
 
         }
+
     }
 
-
-    public static void addDeposit()
+    public static void addMenu()
     {
+         try
+         {
+             // print the home screen
+             System.out.println("-".repeat(65));
+             System.out.println("                Welcome to your $ Management Tool");
+             System.out.println();
+             System.out.println("                             Home");
+             System.out.println("-".repeat(65));
+             System.out.println();
+             System.out.println("What do you want to do " + userName + "?");
+             System.out.println();
+             System.out.println("1 - Add Deposit ");
+             System.out.println("2 - Make Payment (Debit) ");
+             System.out.println("3 - Ledger ");
+             System.out.println("4 - Exit ");
+             System.out.println();
+             System.out.println("Make a selection below: ");
+             choice = Integer.parseInt(userInput.nextLine().trim());
+
+             // create switch statement for options
+             switch (choice) {
+                 case 1:
+                     addDeposit();
+                     break;
+                 case 2:
+                     makePayment();
+                     break;
+                 case 3:
+                     ledger();
+                     break;
+                 case 4:
+                     System.out.println();
+                     System.out.println("Goodbye for now " + userName + "!");
+                     return;
+                 default:
+                     System.out.println();
+                     System.out.println("Error: Invalid selection ");
+                     return;
+             }
+         } catch (Exception ex) {
+             System.out.println();
+             System.out.println("Error, invalid input. ");
+         }
+    }
+
+    public static void addDeposit() {
         System.out.println();
         System.out.println("-".repeat(65));
         System.out.println("                          Add Deposit");
@@ -105,26 +109,22 @@ public class Main
         // save the deposit information into the csv file
         File file = new File("files/transactions.csv");
 
-        try(FileWriter fileWriter = new FileWriter(file, true);
-            PrintWriter writer = new PrintWriter(fileWriter);
-        )
-        {
+        try (FileWriter fileWriter = new FileWriter(file, true);
+             PrintWriter writer = new PrintWriter(fileWriter);
+        ) {
             writer.println(depositInfo); // write the deposit information to the file
             writer.flush();
             System.out.println("Deposit added successfully. Enjoy " + userName + "!");
             System.out.println();
             addMenu();
-        }
-        catch(IOException ex)
-        {
+        } catch (IOException ex) {
             System.out.println("Error occurred. Deposit did not go through. ");
             ex.printStackTrace();
         }
 
     }
 
-    public static void makePayment()
-    {
+    public static void makePayment() {
         System.out.println();
         System.out.println("-".repeat(65));
         System.out.println("                        Make Payment (Debit)");
@@ -149,25 +149,21 @@ public class Main
         // save payment information into the csv file
         File file = new File("files/transactions.csv");
 
-        try(FileWriter fileWriter = new FileWriter(file, true);
-            PrintWriter writer = new PrintWriter(fileWriter);
-        )
-        {
+        try (FileWriter fileWriter = new FileWriter(file, true);
+             PrintWriter writer = new PrintWriter(fileWriter);
+        ) {
             writer.println(paymentInfo); // write the payment information to the file
             writer.flush();
             System.out.println("Thank you " + userName + ", your payment was added successfully. ");
             System.out.println();
             addMenu();
-        }
-        catch(IOException ex)
-        {
+        } catch (IOException ex) {
             System.out.println("Error occurred while processing payment. ");
             ex.printStackTrace();
         }
     }
 
-    public static void ledger()
-    {
+    public static void ledger() {
         int choice = 0;
 
         while (choice != 5) {
@@ -181,16 +177,15 @@ public class Main
             System.out.println("1 - Display all entries ");
             System.out.println("2 - Deposits only ");
             System.out.println("3 - Payments only ");
-            System.out.println("4 - Reports ");
+            System.out.println("4 - Reports / Custom Search ");
             System.out.println("5 - Home ");
             System.out.println();
             System.out.println("Make a selection below: ");
-            choice = Integer.parseInt(userInput.nextLine());
+            choice = Integer.parseInt(userInput.nextLine().trim());
             System.out.println();
 
             // create a switch statement for options
-            switch (choice)
-            {
+            switch (choice) {
                 case 1:
                     System.out.println("-".repeat(65));
                     System.out.println("                           All Entries");
@@ -206,8 +201,18 @@ public class Main
                     depositsOnly();
                     break;
                 case 3:
+                    System.out.println("-".repeat(65));
+                    System.out.println("                          Payments Only");
+                    System.out.println("-".repeat(65));
+                    System.out.println();
+                    paymentsOnly();
                     break;
                 case 4:
+                    System.out.println("-".repeat(65));
+                    System.out.println("                     Reports / Custom Search");
+                    System.out.println("-".repeat(65));
+                    System.out.println();
+                    reports();
                     break;
                 case 5:
                     addMenu(); // takes user back to the menu/home screen
@@ -222,29 +227,89 @@ public class Main
 
     public static void displayAllEntries()
     {
+          Scanner scanner = new Scanner(System.in);
+
+          // file path
+          String filePath = "files/transactions.csv";
+
+          // create a file object that points to the text file
+          File file = new File(filePath);
+
+          // create a file reader to open the file (Scanner)
+          try (Scanner fileScanner = new Scanner(file)) {
+              // read the contents of the file
+              while (fileScanner.hasNext()) {
+                  String line = fileScanner.nextLine();
+                  String[] words = line.split(" ");
+
+                  System.out.println(line);
+              }
+          } catch (FileNotFoundException ex) {
+              System.out.println("An error has occurred while accessing file. ");
+          }
+
+          // prompt user to make their next move
+          // provides user with an option to go to previous screen or to go to the home screen
+          System.out.println();
+          System.out.println("What do you want to do next " + userName + "?");
+          System.out.println();
+          System.out.println("A - Return to Ledger Menu ");
+          System.out.println("B - Return to Home Screen ");
+          System.out.println("C - Exit the app ");
+          System.out.println();
+          System.out.println("Enter your choice below: ");
+          String choice = scanner.nextLine();
+
+          // process the users choice
+          switch (choice.toUpperCase()) {
+              case "A":
+                  ledger();
+                  break;
+              case "B":
+                  addMenu();
+                  break;
+              case "C":
+                  System.out.println();
+                  System.out.println("Goodbye for now " + userName + "!");
+                  return;
+              default:
+                  System.out.println();
+                  System.out.println("An error has occurred while retrieving selection. ");
+                  break;
+          }
+
+    }
+
+    public static void depositsOnly() {
         Scanner scanner = new Scanner(System.in);
 
-        // file path
-        String filePath = "files/transactions.csv";
+        File file = new File("files/transactions.csv");
 
-        // create a file object that points to the text file
-        File file = new File(filePath);
+        try (
+                FileReader fileReader = new FileReader(file);
+                BufferedReader reader = new BufferedReader(fileReader);
+        ) {
+            // skip the header line
+            String line = reader.readLine();
 
-        // create a file reader to open the file (Scanner)
-        try(Scanner fileScanner = new Scanner(file))
-        {
-            // read the contents of the file
-            while(fileScanner.hasNext())
-            {
-                String line = fileScanner.nextLine();
-                String[] words = line.split(" ");
+            // read each line of the file
+            while ((line = reader.readLine()) != null) {
+                String[] columns = line.split("\\|");
 
-                System.out.println(line);
+                if (columns.length >= 4) {
+                    double depositAmount = Double.parseDouble(columns[4]);
+
+                    // check if the entry represents a deposit by checking if amount is greater than 0
+                    if (depositAmount > 0) {
+                        // print the line if its a deposit
+                        System.out.println(line);
+                    }
+                }
+
+                System.out.println();
             }
-        }
-        catch (FileNotFoundException ex)
-        {
-            System.out.println("An error has occurred while accessing file. ");
+        } catch (IOException ex) {
+            System.out.println("An error occurred while opening the file. ");
         }
 
         // prompt user to make their next move
@@ -254,19 +319,23 @@ public class Main
         System.out.println();
         System.out.println("A - Return to Ledger Menu ");
         System.out.println("B - Return to Home Screen ");
+        System.out.println("C - Exit the app ");
         System.out.println();
         System.out.println("Enter your choice below: ");
         String choice = scanner.nextLine();
 
         // process the users choice
-        switch (choice.toUpperCase())
-        {
+        switch (choice.toUpperCase()) {
             case "A":
                 ledger();
                 break;
             case "B":
                 addMenu();
                 break;
+            case "C":
+                System.out.println();
+                System.out.println("Goodbye for now " + userName + "!");
+                return;
             default:
                 System.out.println();
                 System.out.println("An error has occurred while retrieving selection. ");
@@ -274,8 +343,170 @@ public class Main
         }
     }
 
-    public static void depositsOnly()
+    public static void paymentsOnly() {
+        Scanner scanner = new Scanner(System.in);
+
+        File file = new File("files/transactions.csv");
+
+        try (
+                FileReader fileReader = new FileReader(file);
+                BufferedReader reader = new BufferedReader(fileReader);
+        ) {
+            // skip the header line
+            String line = reader.readLine();
+
+            // read each line of the file
+            while ((line = reader.readLine()) != null) {
+                String[] columns = line.split("\\|");
+
+                if (columns.length >= 4) {
+                    double depositAmount = Double.parseDouble(columns[4]);
+
+                    // check if the entry represents a payment by checking if amount is less than 0
+                    if (depositAmount < 0) {
+                        // print the line if it's a payment
+                        System.out.println(line);
+                    }
+                }
+
+                System.out.println();
+            }
+        } catch (IOException ex) {
+            System.out.println("An error occurred while opening the file. ");
+        }
+
+        // prompt user to make their next move
+        // provides user with an option to go to previous screen or to go to the home screen
+        System.out.println();
+        System.out.println("What do you want to do next " + userName + "?");
+        System.out.println();
+        System.out.println("A - Return to Ledger Menu ");
+        System.out.println("B - Return to Home Screen ");
+        System.out.println("C - Exit the app ");
+        System.out.println();
+        System.out.println("Enter your choice below: ");
+        String choice = scanner.nextLine();
+
+        // process the users choice
+        switch (choice.toUpperCase()) {
+            case "A":
+                ledger();
+                break;
+            case "B":
+                addMenu();
+                break;
+            case "C":
+                System.out.println();
+                System.out.println("Goodbye for now " + userName + "!");
+                return;
+            default:
+                System.out.println();
+                System.out.println("An error has occurred while retrieving selection. ");
+                break;
+        }
+    }
+
+    // (sub-menu within ledger menu)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    public static void reports()
     {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Choose a report: ");
+        System.out.println();
+        System.out.println("1 - Month To Date ");
+        System.out.println("2 - Previous Month ");
+        System.out.println("3 - Year To Date ");
+        System.out.println("4 - Previous Year ");
+        System.out.println("5 - Search by Vendor ");
+        System.out.println("6 - Back ");
+        System.out.println();
+
+        // prompt the user for input
+        System.out.println("Make a selection below: ");
+        int choice = scanner.nextInt();
+
+        // process the users choice
+        switch (choice) {
+            case 1:
+                System.out.println();
+                System.out.println("-".repeat(65));
+                System.out.println("                        Month To Date Report");
+                System.out.println("-".repeat(65));
+                System.out.println();
+                monthToDateReport();
+                break;
+            //case 2:
+            //    System.out.println("-".repeat(65));
+            //    System.out.println("                          Previous Month Report");
+            //    System.out.println("-".repeat(65));
+            //    System.out.println();
+            //    previousMonthReport();
+            //    break;
+            //case 3:
+            //    System.out.println("-".repeat(65));
+            //    System.out.println("                          Year To Date Report");
+            //    System.out.println("-".repeat(65));
+            //    System.out.println();
+            //    yearToDateReport();
+            //    break;
+            //case 4:
+            //    System.out.println("-".repeat(65));
+            //    System.out.println("                          Previous Year Report");
+            //    System.out.println("-".repeat(65));
+            //    System.out.println();
+            //    previousYearReport();
+            //    break;
+            //case 5:
+            //    System.out.println("-".repeat(65));
+            //    System.out.println("                          Search By Vendor Report");
+            //    System.out.println("-".repeat(65));
+            //    System.out.println();
+            //    searchByVendorReport();
+            //    break;
+            case 6:
+                ledger();
+                break;
+            default:
+                System.out.println("Invalid choice. Please enter a number between 1 and 6. ");
+        }
+    }
+
+    public static void monthToDateReport()
+    {
+        Scanner scanner = new Scanner(System.in);
+
+        // prompt the user for the month to date information
+        System.out.println();
+        System.out.println("Enter the month (e.g., '01' for January): ");
+        String month = scanner.nextLine();
+        System.out.println("Enter the date (e.g., '15' for the 15th): ");
+        int date = scanner.nextInt();
+        System.out.println();
+
+        // read ledger entries from csv file based on user input
+        String file = "files/transactions.csv";
 
     }
 }
+
+   //public static void previousMonthReport()
+   //{
+   //
+   //}
+   //
+   //public static void yearToDateReport ()
+   //{
+   //
+   //}
+   //
+   //public static void previousYearReport ()
+   //{
+   //
+   //}
+   //
+   //public static void searchByVendorReport ()
+   //{
+   //
+   //}
+
+
