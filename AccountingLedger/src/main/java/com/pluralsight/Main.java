@@ -4,19 +4,21 @@ package com.pluralsight;
 Explanation of project goes here
  */
 
+import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
+//***** import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.HashMap;
+//*****import java.util.List;
+//*****import java.util.ArrayList;
+//*****import java.util.HashMap;
 
 
 public class Main {
@@ -37,51 +39,49 @@ public class Main {
 
     }
 
-    public static void addMenu()
-    {
-         try
-         {
-             // print the home screen
-             System.out.println("-".repeat(65));
-             System.out.println("                Welcome to your $ Management Tool");
-             System.out.println();
-             System.out.println("                             Home");
-             System.out.println("-".repeat(65));
-             System.out.println();
-             System.out.println("What do you want to do " + userName + "?");
-             System.out.println();
-             System.out.println("1 - Add Deposit ");
-             System.out.println("2 - Make Payment (Debit) ");
-             System.out.println("3 - Ledger ");
-             System.out.println("4 - Exit ");
-             System.out.println();
-             System.out.println("Make a selection below: ");
-             choice = Integer.parseInt(userInput.nextLine().trim());
+    public static void addMenu() {
+        try {
+            // print the home screen
+            System.out.println("-".repeat(65));
+            System.out.println("                Welcome to your $ Management Tool");
+            System.out.println();
+            System.out.println("                             Home");
+            System.out.println("-".repeat(65));
+            System.out.println();
+            System.out.println("What do you want to do " + userName + "?");
+            System.out.println();
+            System.out.println("1 - Add Deposit ");
+            System.out.println("2 - Make Payment (Debit) ");
+            System.out.println("3 - Ledger ");
+            System.out.println("4 - Exit ");
+            System.out.println();
+            System.out.println("Make a selection below: ");
+            choice = Integer.parseInt(userInput.nextLine().trim());
 
-             // create switch statement for options
-             switch (choice) {
-                 case 1:
-                     addDeposit();
-                     break;
-                 case 2:
-                     makePayment();
-                     break;
-                 case 3:
-                     ledger();
-                     break;
-                 case 4:
-                     System.out.println();
-                     System.out.println("Goodbye for now " + userName + "!");
-                     return;
-                 default:
-                     System.out.println();
-                     System.out.println("Error: Invalid selection ");
-                     return;
-             }
-         } catch (Exception ex) {
-             System.out.println();
-             System.out.println("Error, invalid input. ");
-         }
+            // create switch statement for options
+            switch (choice) {
+                case 1:
+                    addDeposit();
+                    break;
+                case 2:
+                    makePayment();
+                    break;
+                case 3:
+                    ledger();
+                    break;
+                case 4:
+                    System.out.println();
+                    System.out.println("Goodbye for now " + userName + "!");
+                    System.exit(1); // can recycle this for all exits
+                default:
+                    System.out.println();
+                    System.out.println("Error: Invalid selection ");
+                    return;
+            }
+        } catch (Exception ex) {
+            System.out.println();
+            System.out.println("Error, invalid input. ");
+        }
     }
 
     public static void addDeposit() {
@@ -109,7 +109,7 @@ public class Main {
         // save the deposit information into the csv file
         File file = new File("files/transactions.csv");
 
-        try (FileWriter fileWriter = new FileWriter(file, true);
+        try (FileWriter fileWriter = new FileWriter(file, true); // try with resources
              PrintWriter writer = new PrintWriter(fileWriter);
         ) {
             writer.println(depositInfo); // write the deposit information to the file
@@ -225,59 +225,57 @@ public class Main {
         }
     }
 
-    public static void displayAllEntries()
-    {
-          Scanner scanner = new Scanner(System.in);
+    public static void displayAllEntries() {
+        Scanner scanner = new Scanner(System.in);
 
-          // file path
-          String filePath = "files/transactions.csv";
+        // file path
+        String filePath = "files/transactions.csv";
 
-          // create a file object that points to the text file
-          File file = new File(filePath);
+        // create a file object that points to the text file
+        File file = new File(filePath);
 
-          // create a file reader to open the file (Scanner)
-          try (Scanner fileScanner = new Scanner(file)) {
-              // read the contents of the file
-              while (fileScanner.hasNext()) {
-                  String line = fileScanner.nextLine();
-                  String[] words = line.split(" ");
+        // create a file reader to open the file (Scanner)
+        try (Scanner fileScanner = new Scanner(file)) {
+            // read the contents of the file
+            while (fileScanner.hasNext()) {
+                String line = fileScanner.nextLine();
+                String[] words = line.split(" ");
 
-                  System.out.println(line);
-              }
-          } catch (FileNotFoundException ex) {
-              System.out.println("An error has occurred while accessing file. ");
-          }
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException ex) {
+            System.out.println("An error has occurred while accessing file. ");
+        }
 
-          // prompt user to make their next move
-          // provides user with an option to go to previous screen or to go to the home screen
-          System.out.println();
-          System.out.println("What do you want to do next " + userName + "?");
-          System.out.println();
-          System.out.println("A - Return to Ledger Menu ");
-          System.out.println("B - Return to Home Screen ");
-          System.out.println("C - Exit the app ");
-          System.out.println();
-          System.out.println("Enter your choice below: ");
-          String choice = scanner.nextLine();
+        // prompt user to make their next move
+        // provides user with an option to go to previous screen or to go to the home screen
+        System.out.println();
+        System.out.println("What do you want to do next " + userName + "?");
+        System.out.println();
+        System.out.println("A - Return to Ledger Menu ");
+        System.out.println("B - Return to Home Screen ");
+        System.out.println("C - Exit the app ");
+        System.out.println();
+        System.out.println("Enter your choice below: ");
+        String choice = scanner.nextLine();
 
-          // process the users choice
-          switch (choice.toUpperCase()) {
-              case "A":
-                  ledger();
-                  break;
-              case "B":
-                  addMenu();
-                  break;
-              case "C":
-                  System.out.println();
-                  System.out.println("Goodbye for now " + userName + "!");
-                  return;
-              default:
-                  System.out.println();
-                  System.out.println("An error has occurred while retrieving selection. ");
-                  break;
-          }
-
+        // process the users choice
+        switch (choice.toUpperCase()) {
+            case "A":
+                ledger();
+                break;
+            case "B":
+                addMenu();
+                break;
+            case "C":
+                System.out.println();
+                System.out.println("Goodbye for now " + userName + "!");
+                System.exit(1); // can recycle this for all exits
+            default:
+                System.out.println();
+                System.out.println("An error has occurred while retrieving selection. ");
+                break;
+        }
     }
 
     public static void depositsOnly() {
@@ -305,8 +303,6 @@ public class Main {
                         System.out.println(line);
                     }
                 }
-
-                System.out.println();
             }
         } catch (IOException ex) {
             System.out.println("An error occurred while opening the file. ");
@@ -335,7 +331,7 @@ public class Main {
             case "C":
                 System.out.println();
                 System.out.println("Goodbye for now " + userName + "!");
-                return;
+                System.exit(1);
             default:
                 System.out.println();
                 System.out.println("An error has occurred while retrieving selection. ");
@@ -369,7 +365,6 @@ public class Main {
                     }
                 }
 
-                System.out.println();
             }
         } catch (IOException ex) {
             System.out.println("An error occurred while opening the file. ");
@@ -398,7 +393,7 @@ public class Main {
             case "C":
                 System.out.println();
                 System.out.println("Goodbye for now " + userName + "!");
-                return;
+                System.exit(1);
             default:
                 System.out.println();
                 System.out.println("An error has occurred while retrieving selection. ");
@@ -406,9 +401,8 @@ public class Main {
         }
     }
 
-    // (sub-menu within ledger menu)~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    public static void reports()
-    {
+    // (sub-menu within ledger menu)____________________________________________________________________________________
+    public static void reports() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Choose a report: ");
@@ -423,7 +417,7 @@ public class Main {
 
         // prompt the user for input
         System.out.println("Make a selection below: ");
-        int choice = scanner.nextInt();
+        int choice = Integer.parseInt(scanner.nextLine().strip());
 
         // process the users choice
         switch (choice) {
@@ -435,34 +429,34 @@ public class Main {
                 System.out.println();
                 monthToDateReport();
                 break;
-            //case 2:
-            //    System.out.println("-".repeat(65));
-            //    System.out.println("                          Previous Month Report");
-            //    System.out.println("-".repeat(65));
-            //    System.out.println();
-            //    previousMonthReport();
-            //    break;
-            //case 3:
-            //    System.out.println("-".repeat(65));
-            //    System.out.println("                          Year To Date Report");
-            //    System.out.println("-".repeat(65));
-            //    System.out.println();
-            //    yearToDateReport();
-            //    break;
-            //case 4:
-            //    System.out.println("-".repeat(65));
-            //    System.out.println("                          Previous Year Report");
-            //    System.out.println("-".repeat(65));
-            //    System.out.println();
-            //    previousYearReport();
-            //    break;
-            //case 5:
-            //    System.out.println("-".repeat(65));
-            //    System.out.println("                          Search By Vendor Report");
-            //    System.out.println("-".repeat(65));
-            //    System.out.println();
-            //    searchByVendorReport();
-            //    break;
+            case 2:
+                System.out.println("-".repeat(65));
+                System.out.println("                          Previous Month Report");
+                System.out.println("-".repeat(65));
+                System.out.println();
+                previousMonthReport();
+                break;
+            case 3:
+                System.out.println("-".repeat(65));
+                System.out.println("                          Year To Date Report");
+                System.out.println("-".repeat(65));
+                System.out.println();
+                yearToDateReport();
+                break;
+            case 4:
+                System.out.println("-".repeat(65));
+                System.out.println("                       Previous Year Report");
+                System.out.println("-".repeat(65));
+                System.out.println();
+                previousYearReport();
+                break;
+            case 5:
+                System.out.println("-".repeat(65));
+                System.out.println("                     Search By Vendor Report");
+                System.out.println("-".repeat(65));
+                System.out.println();
+                searchByVendorReport();
+                break;
             case 6:
                 ledger();
                 break;
@@ -473,40 +467,145 @@ public class Main {
 
     public static void monthToDateReport()
     {
-        Scanner scanner = new Scanner(System.in);
-
-        // prompt the user for the month to date information
-        System.out.println();
-        System.out.println("Enter the month (e.g., '01' for January): ");
-        String month = scanner.nextLine();
-        System.out.println("Enter the date (e.g., '15' for the 15th): ");
-        int date = scanner.nextInt();
-        System.out.println();
-
-        // read ledger entries from csv file based on user input
+        //***** Scanner scanner = new Scanner(System.in);
         String file = "files/transactions.csv";
 
+        // current date objects
+        LocalDate CurrentDate = LocalDate.now();
+        LocalDate transactionDate;
+
+        int CurrentMonth = CurrentDate.getMonthValue();
+        int CurrentYear = CurrentDate.getYear();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            reader.readLine(); // skips the header line in csv file
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] fileParts = line.split("\\|");
+                transactionDate = LocalDate.parse(fileParts[0].split("\\|")[0]);
+                if (transactionDate.getMonthValue() == CurrentMonth && transactionDate.getYear() == CurrentYear)
+                {
+                    System.out.println(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("File not read.");
+        }
     }
+
+    public static void previousMonthReport()
+    {
+        //*****Scanner scanner = new Scanner(System.in);
+        String file = "files/transactions.csv";
+
+        // current date objects
+        LocalDate CurrentDate = LocalDate.now();
+        LocalDate transactionDate;
+
+        int PreviousMonth = CurrentDate.getMonthValue() - 1;
+        int CurrentYear = CurrentDate.getYear();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            reader.readLine(); // skips the header line in csv file
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] fileParts = line.split("\\|");
+                transactionDate = LocalDate.parse(fileParts[0].split("\\|")[0]);
+                if (transactionDate.getMonthValue() == PreviousMonth && transactionDate.getYear() == CurrentYear)
+                {
+                    System.out.println(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("File not read.");
+        }
+
+    }
+
+    public static void yearToDateReport()
+    {
+        //*****Scanner scanner = new Scanner(System.in);
+        String file = "files/transactions.csv";
+
+        // current date objects
+        LocalDate CurrentDate = LocalDate.now();
+        LocalDate transactionDate;
+
+        int CurrentYear = CurrentDate.getYear();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            reader.readLine(); // skips the header line in csv file
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] fileParts = line.split("\\|");
+                transactionDate = LocalDate.parse(fileParts[0].split("\\|")[0]);
+                if (transactionDate.getYear() == CurrentYear)
+                {
+                    System.out.println(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("File not read.");
+        }
+
+    }
+
+    public static void previousYearReport()
+    {
+        //*****Scanner scanner = new Scanner(System.in);
+        String file = "files/transactions.csv";
+
+        // current date objects
+        LocalDate CurrentDate = LocalDate.now();
+        LocalDate transactionDate;
+
+        int PreviousYear = CurrentDate.getYear() -1; // subtracted -1 to get previous year
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            reader.readLine(); // skips the header line in csv file
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] fileParts = line.split("\\|");
+                transactionDate = LocalDate.parse(fileParts[0].split("\\|")[0]);
+                if (transactionDate.getYear() == PreviousYear)
+                {
+                    System.out.println(line);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("File not read.");
+        }
+    }
+
+     public static void searchByVendorReport()
+     {
+         System.out.println("Enter the vendor name below: ");
+         Scanner scanner = new Scanner(System.in);
+         String userInput = scanner.nextLine(); // read user input for vendor name
+
+         String file = "files/transactions.csv";
+
+         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+             reader.readLine(); // skips the header line in csv file
+             String line;
+
+             while ((line = reader.readLine()) != null)
+             {
+                 String[] fileParts = line.split("\\|");
+                 String vendorName = fileParts[3]; // vendor is on array column 3
+
+                 if (vendorName.equalsIgnoreCase(userInput))
+                 {
+                     System.out.println(line);
+                 }
+             }
+         } catch (IOException e) {
+             System.out.println("File not read.");
+         }
+     }
+
 }
-
-   //public static void previousMonthReport()
-   //{
-   //
-   //}
-   //
-   //public static void yearToDateReport ()
-   //{
-   //
-   //}
-   //
-   //public static void previousYearReport ()
-   //{
-   //
-   //}
-   //
-   //public static void searchByVendorReport ()
-   //{
-   //
-   //}
-
-
